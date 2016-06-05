@@ -14,8 +14,19 @@
  * not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
  * 02110-1301, USA.
  */
-#include <ft/hdf5/Hdf5.hpp>
+#include <ft/hdf5/File.hpp>
+
+#include <ft/hdf5/Exception.hpp>
 
 namespace ft {
+
+Hdf5File createHdf5File(const char* name, unsigned flags, hid_t createId, hid_t accessId)
+{
+  hid_t hid{H5Fcreate(name, flags, createId, accessId)};
+  if (hid < 0) {
+    throw Hdf5Exception{};
+  }
+  return Hdf5File{hid};
+}
 
 } // ft

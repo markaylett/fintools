@@ -14,13 +14,27 @@
  * not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
  * 02110-1301, USA.
  */
-#ifndef FT_HDF5_HDF5_HPP
-#define FT_HDF5_HDF5_HPP
+#ifndef FT_HDF5_FILE_HPP
+#define FT_HDF5_FILE_HPP
 
 #include <ft/util/Defs.hpp>
+#include <ft/util/UniqueHandle.hpp>
+
+#include <H5Ppublic.h>
 
 namespace ft {
 
+struct Hdf5FilePolicy {
+  using HandleType = hid_t;
+  static constexpr HandleType Invalid{H5I_INVALID_HID};
+  static void close(HandleType handle) noexcept { H5Fclose(handle); }
+};
+
+using Hdf5File = UniqueHandle<Hdf5FilePolicy>;
+
+FT_API Hdf5File createHdf5File(const char* name, unsigned flags, hid_t createId = H5P_DEFAULT,
+                               hid_t accessId = H5P_DEFAULT);
+
 } // ft
 
-#endif // FT_HDF5_HDF5_HPP
+#endif // FT_HDF5_FILE_HPP

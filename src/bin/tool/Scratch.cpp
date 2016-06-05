@@ -14,8 +14,11 @@
  * not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
  * 02110-1301, USA.
  */
-#include <ft/hdf5/Hdf5.hpp>
+#include <ft/hdf5/File.hpp>
 
+#include <H5Epublic.h>
+
+#include <exception>
 #include <iostream>
 
 using namespace ft;
@@ -25,6 +28,9 @@ int main(int argc, char* argv[])
 {
   int ret = 1;
   try {
+    // Suppress error logging.
+    H5Eset_auto2(H5E_DEFAULT, nullptr, nullptr);
+    auto file = createHdf5File("scratch.h5", H5F_ACC_TRUNC, H5P_DEFAULT, H5P_DEFAULT);
     ret = 0;
   } catch (const exception& e) {
     cerr << "exception: " << e.what() << endl;
