@@ -18,6 +18,7 @@ matrix:
             - cmake-data
             - clang-3.7
             - libboost1.55-all-dev
+            - libhdf5-serial-dev
       env: CMAKE_BUILD_TYPE=DEBUG
 
     - os: linux
@@ -34,6 +35,7 @@ matrix:
             - cmake-data
             - clang-3.7
             - libboost1.55-all-dev
+            - libhdf5-serial-dev
       env: CMAKE_BUILD_TYPE=RELEASE
 
     - os: linux
@@ -49,6 +51,7 @@ matrix:
             - cmake-data
             - g++-5
             - libboost1.55-all-dev
+            - libhdf5-serial-dev
       env: CMAKE_BUILD_TYPE=DEBUG
 
     - os: linux
@@ -64,6 +67,7 @@ matrix:
             - cmake-data
             - g++-5
             - libboost1.55-all-dev
+            - libhdf5-serial-dev
       env: CMAKE_BUILD_TYPE=RELEASE
 
     - os: osx
@@ -78,7 +82,9 @@ matrix:
 
 before_install:
   - if [ "$TRAVIS_OS_NAME" == "osx" ]; then
+      brew tap homebrew/science;
       brew update;
+      brew install hdf5 --enable-cxx;
       brew install llvm37;
       brew outdated boost || brew upgrade boost;
     fi
