@@ -14,10 +14,13 @@
  * not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
  * 02110-1301, USA.
  */
-#pragma once
+#ifndef FT_HDF5_HDF5_HPP
+#define FT_HDF5_HDF5_HPP
 
 #include <ft/util/Defs.hpp>
 
 namespace ft {
 
 } // ft
+
+#endif // FT_HDF5_HDF5_HPP
