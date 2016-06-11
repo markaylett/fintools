@@ -13,6 +13,11 @@
 # not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
 # 02110-1301, USA.
 
-add_definitions(-DBOOST_TEST_DYN_LINK)
-add_subdirectory(util)
-add_subdirectory(hdf5)
+include_directories("${PROJECT_SOURCE_DIR}/src/util")
+
+file(GLOB util_test_SOURCES "*.cpp")
+
+add_executable(ft_util_test ${util_test_SOURCES})
+target_link_libraries(ft_util_test ${Boost_UNIT_TEST_FRAMEWORK_LIBRARY})
+
+add_test(NAME util_test COMMAND ft_util_test --log_level=all)

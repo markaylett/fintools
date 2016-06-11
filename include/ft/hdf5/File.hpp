@@ -14,26 +14,27 @@
  * not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
  * 02110-1301, USA.
  */
-#include <ft/hdf5/File.hpp>
+#ifndef FT_HDF5_FILE_HPP
+#define FT_HDF5_FILE_HPP
 
-#include <H5Epublic.h>
+#include <ft/util/Defs.hpp>
+#include <ft/util/UniqueHandle.hpp>
 
-#include <exception>
-#include <iostream>
+#include <H5Ppublic.h>
 
-using namespace ft;
-using namespace std;
+namespace ft {
 
-int main(int argc, char* argv[])
-{
-  int ret = 1;
-  try {
-    // Suppress error logging.
-    H5Eset_auto2(H5E_DEFAULT, nullptr, nullptr);
-    auto file = createHdf5File("scratch.h5", H5F_ACC_TRUNC, H5P_DEFAULT, H5P_DEFAULT);
-    ret = 0;
-  } catch (const exception& e) {
-    cerr << "exception: " << e.what() << endl;
-  }
-  return ret;
-}
+struct Hdf5FilePolicy {
+  using HandleType = hid_t;
+  static constexpr HandleType Invalid{H5I_INVALID_HID};
+  static void close(HandleType handle) noexcept { H5Fclose(handle); }
+};
+
+using Hdf5File = UniqueHandle<Hdf5FilePolicy>;
+
+FT_API Hdf5File createHdf5File(const char* name, unsigned flags, hid_t createId = H5P_DEFAULT,
+                               hid_t accessId = H5P_DEFAULT);
+
+} // ft
+
+#endif // FT_HDF5_FILE_HPP

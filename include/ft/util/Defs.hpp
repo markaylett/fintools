@@ -14,9 +14,12 @@
  * not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
  * 02110-1301, USA.
  */
-#pragma once
+#ifndef FT_UTIL_DEFS_HPP
+#define FT_UTIL_DEFS_HPP
 
 /**
  * Macro for exporting classes and functions that compose the public API.
  */
 #define FT_API __attribute__((visibility("default")))
+
+#endif // FT_UTIL_DEFS_HPP

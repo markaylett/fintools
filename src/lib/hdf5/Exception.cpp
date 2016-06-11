@@ -14,26 +14,40 @@
  * not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
  * 02110-1301, USA.
  */
-#include <ft/hdf5/File.hpp>
+#include <ft/hdf5/Exception.hpp>
 
 #include <H5Epublic.h>
 
-#include <exception>
-#include <iostream>
-
-using namespace ft;
 using namespace std;
 
-int main(int argc, char* argv[])
+namespace ft {
+namespace {
+herr_t setError(unsigned n, const H5E_error2_t* errDesc, void* clientData) noexcept
 {
-  int ret = 1;
-  try {
-    // Suppress error logging.
-    H5Eset_auto2(H5E_DEFAULT, nullptr, nullptr);
-    auto file = createHdf5File("scratch.h5", H5F_ACC_TRUNC, H5P_DEFAULT, H5P_DEFAULT);
-    ret = 0;
-  } catch (const exception& e) {
-    cerr << "exception: " << e.what() << endl;
-  }
-  return ret;
+  auto* buf = static_cast<char*>(clientData);
+  strncpy(buf, errDesc->desc, MaxErrMsg);
+  buf[MaxErrMsg] = '\0';
+  return 0;
 }
+} // anonymous
+
+Hdf5Exception::Hdf5Exception() noexcept
+{
+  // FIXME: is this the best approach? Is it thread-safe?
+  hid_t stack{H5Eget_current_stack()};
+  // Pop all but inner-most frame, i.e., the root cause.
+  H5Epop(stack, H5Eget_num(stack) - 1);
+  // Get inner-most error message.
+  H5Ewalk2(stack, H5E_WALK_DOWNWARD, setError, what_);
+  // Free stack.
+  H5Eclose_stack(stack);
+}
+
+Hdf5Exception::~Hdf5Exception() noexcept = default;
+
+const char* Hdf5Exception::what() const noexcept
+{
+  return what_;
+}
+
+} // ft

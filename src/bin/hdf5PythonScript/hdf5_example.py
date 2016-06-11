@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 '''
 Example of reading and writing a HDF5 file using Pandas
 '''
@@ -12,4 +13,3 @@ ts = pandas.read_csv("data.csv", delim_whitespace=True)
 ts2 = pandas.read_hdf("data.hdf5", "table")
 
 print(all(ts == ts2))
-

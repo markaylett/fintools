@@ -14,14 +14,14 @@
  * not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
  * 02110-1301, USA.
  */
-#include <ft/hdf5/Hdf5.hpp>
+#include <ft/hdf5/Exception.hpp>
 
 #include <boost/test/unit_test.hpp>
 
 using namespace ft;
 using namespace std;
 
-BOOST_AUTO_TEST_SUITE(DefsSuite)
+BOOST_AUTO_TEST_SUITE(ExceptionSuite)
 
 BOOST_AUTO_TEST_CASE(Test1Case)
 {

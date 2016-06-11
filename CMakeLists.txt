@@ -59,8 +59,10 @@ file(MAKE_DIRECTORY "${LIBRARY_OUTPUT_PATH}")
 set(CMAKE_MODULE_PATH "${CMAKE_MODULE_PATH}" "${PROJECT_SOURCE_DIR}/etc")
 
 find_package(Boost 1.55 REQUIRED COMPONENTS unit_test_framework)
+find_package(HDF5 1.8 REQUIRED COMPONENTS C)
 
 include_directories("${Boost_INCLUDE_DIRS}")
+include_directories("${HDF5_INCLUDE_DIRS}")
 include_directories("${PROJECT_SOURCE_DIR}/include")
 
 if(ENABLE_SHARED_LIBS)

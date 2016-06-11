@@ -14,10 +14,18 @@
  * not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
  * 02110-1301, USA.
  */
-#pragma once
+#include <ft/hdf5/File.hpp>
 
-#include <ft/util/Defs.hpp>
+#include <boost/test/unit_test.hpp>
 
-namespace ft {
+using namespace ft;
+using namespace std;
 
-} // ft
+BOOST_AUTO_TEST_SUITE(FileSuite)
+
+BOOST_AUTO_TEST_CASE(Test1Case)
+{
+  BOOST_CHECK(true);
+}
+
+BOOST_AUTO_TEST_SUITE_END()
