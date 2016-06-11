@@ -18,6 +18,6 @@ include_directories("${PROJECT_SOURCE_DIR}/src/hdf5")
 file(GLOB hdf5_test_SOURCES "*.cpp")
 
 add_executable(ft_hdf5_test ${hdf5_test_SOURCES})
-target_link_libraries(ft_hdf5_test ${Boost_UNIT_TEST_FRAMEWORK_LIBRARY})
+target_link_libraries(ft_hdf5_test ${hdf5_LIBRARY} ${Boost_UNIT_TEST_FRAMEWORK_LIBRARY})
 
 add_test(NAME hdf5_test COMMAND ft_hdf5_test --log_level=all)

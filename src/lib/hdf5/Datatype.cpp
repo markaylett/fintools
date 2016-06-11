@@ -14,20 +14,20 @@
  * not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
  * 02110-1301, USA.
  */
-#include <ft/hdf5/File.hpp>
+#include <ft/hdf5/Datatype.hpp>
 
 #include <ft/hdf5/Exception.hpp>
 
 namespace ft {
 namespace hdf5 {
 
-File createFile(const char* name, unsigned flags, hid_t createId, hid_t accessId)
+Datatype createStringType(size_t size)
 {
-  File file{H5Fcreate(name, flags, createId, accessId)};
-  if (!file) {
+  Datatype type{H5Tcopy(H5T_C_S1)};
+  if (!type || H5Tset_size(*type, size) < 0) {
     throw Exception{};
   }
-  return file;
+  return type;
 }
 
 } // hdf5

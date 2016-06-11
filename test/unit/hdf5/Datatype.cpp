@@ -14,21 +14,19 @@
  * not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
  * 02110-1301, USA.
  */
-#include <ft/hdf5/File.hpp>
+#include <ft/hdf5/Datatype.hpp>
 
-#include <ft/hdf5/Exception.hpp>
+#include <boost/test/unit_test.hpp>
 
-namespace ft {
-namespace hdf5 {
+using namespace ft::hdf5;
+using namespace std;
 
-File createFile(const char* name, unsigned flags, hid_t createId, hid_t accessId)
+BOOST_AUTO_TEST_SUITE(DatatypeSuite)
+
+BOOST_AUTO_TEST_CASE(Test1Case)
 {
-  File file{H5Fcreate(name, flags, createId, accessId)};
-  if (!file) {
-    throw Exception{};
-  }
-  return file;
+  auto type = createStringType(16);
+  BOOST_CHECK(H5Tget_size(*type) == 16);
 }
 
-} // hdf5
-} // ft
+BOOST_AUTO_TEST_SUITE_END()
