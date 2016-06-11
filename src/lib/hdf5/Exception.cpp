@@ -21,6 +21,7 @@
 using namespace std;
 
 namespace ft {
+namespace hdf5 {
 namespace {
 herr_t setError(unsigned n, const H5E_error2_t* errDesc, void* clientData) noexcept
 {
@@ -31,7 +32,7 @@ herr_t setError(unsigned n, const H5E_error2_t* errDesc, void* clientData) noexc
 }
 } // anonymous
 
-Hdf5Exception::Hdf5Exception() noexcept
+Exception::Exception() noexcept
 {
   // FIXME: is this the best approach? Is it thread-safe?
   hid_t stack{H5Eget_current_stack()};
@@ -43,11 +44,12 @@ Hdf5Exception::Hdf5Exception() noexcept
   H5Eclose_stack(stack);
 }
 
-Hdf5Exception::~Hdf5Exception() noexcept = default;
+Exception::~Exception() noexcept = default;
 
-const char* Hdf5Exception::what() const noexcept
+const char* Exception::what() const noexcept
 {
   return what_;
 }
 
+} // hdf5
 } // ft

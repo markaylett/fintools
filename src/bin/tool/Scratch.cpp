@@ -21,7 +21,7 @@
 #include <exception>
 #include <iostream>
 
-using namespace ft;
+using namespace ft::hdf5;
 using namespace std;
 
 int main(int argc, char* argv[])
@@ -30,7 +30,7 @@ int main(int argc, char* argv[])
   try {
     // Suppress error logging.
     H5Eset_auto2(H5E_DEFAULT, nullptr, nullptr);
-    auto file = createHdf5File("scratch.h5", H5F_ACC_TRUNC, H5P_DEFAULT, H5P_DEFAULT);
+    auto file = createFile("scratch.h5", H5F_ACC_TRUNC, H5P_DEFAULT, H5P_DEFAULT);
     ret = 0;
   } catch (const exception& e) {
     cerr << "exception: " << e.what() << endl;

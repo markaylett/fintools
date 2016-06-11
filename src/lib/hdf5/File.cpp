@@ -19,14 +19,16 @@
 #include <ft/hdf5/Exception.hpp>
 
 namespace ft {
+namespace hdf5 {
 
-Hdf5File createHdf5File(const char* name, unsigned flags, hid_t createId, hid_t accessId)
+File createFile(const char* name, unsigned flags, hid_t createId, hid_t accessId)
 {
   hid_t hid{H5Fcreate(name, flags, createId, accessId)};
   if (hid < 0) {
-    throw Hdf5Exception{};
+    throw Exception{};
   }
-  return Hdf5File{hid};
+  return File{hid};
 }
 
+} // hdf5
 } // ft

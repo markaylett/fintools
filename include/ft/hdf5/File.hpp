@@ -23,18 +23,20 @@
 #include <H5Ppublic.h>
 
 namespace ft {
+namespace hdf5 {
 
-struct Hdf5FilePolicy {
+struct FilePolicy {
   using HandleType = hid_t;
   static constexpr HandleType Invalid{H5I_INVALID_HID};
   static void close(HandleType handle) noexcept { H5Fclose(handle); }
 };
 
-using Hdf5File = UniqueHandle<Hdf5FilePolicy>;
+using File = UniqueHandle<FilePolicy>;
 
-FT_API Hdf5File createHdf5File(const char* name, unsigned flags, hid_t createId = H5P_DEFAULT,
-                               hid_t accessId = H5P_DEFAULT);
+FT_API File createFile(const char* name, unsigned flags, hid_t createId = H5P_DEFAULT,
+                       hid_t accessId = H5P_DEFAULT);
 
+} // hdf5
 } // ft
 
 #endif // FT_HDF5_FILE_HPP

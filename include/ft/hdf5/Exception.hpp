@@ -24,29 +24,30 @@
 #include <exception>
 
 namespace ft {
+namespace hdf5 {
 
 /**
  * Maximum error message length.
  */
 constexpr std::size_t MaxErrMsg{255};
 
-class FT_API Hdf5Exception : public std::exception {
+class FT_API Exception : public std::exception {
  public:
-  Hdf5Exception() noexcept;
+  Exception() noexcept;
 
-  ~Hdf5Exception() noexcept override;
+  ~Exception() noexcept override;
 
   // Copy.
-  Hdf5Exception(const Hdf5Exception& rhs) noexcept { *this = rhs; }
-  Hdf5Exception& operator=(const Hdf5Exception& rhs) noexcept
+  Exception(const Exception& rhs) noexcept { *this = rhs; }
+  Exception& operator=(const Exception& rhs) noexcept
   {
     std::strcpy(what_, rhs.what_);
     return *this;
   }
 
   // Move.
-  Hdf5Exception(Hdf5Exception&&) noexcept = default;
-  Hdf5Exception& operator=(Hdf5Exception&&) noexcept = default;
+  Exception(Exception&&) noexcept = default;
+  Exception& operator=(Exception&&) noexcept = default;
 
   const char* what() const noexcept override;
 
@@ -54,6 +55,7 @@ class FT_API Hdf5Exception : public std::exception {
   char what_[MaxErrMsg + 1];
 };
 
+} // hdf5
 } // ft
 
 #endif // FT_HDF5_EXCEPTION_HPP
