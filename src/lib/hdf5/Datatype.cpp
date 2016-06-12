@@ -14,41 +14,20 @@
  * not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
  * 02110-1301, USA.
  */
+#include <ft/hdf5/Datatype.hpp>
+
 #include <ft/hdf5/Exception.hpp>
-
-#include <H5Epublic.h>
-
-using namespace std;
 
 namespace ft {
 namespace hdf5 {
-namespace {
-herr_t setError(unsigned n, const H5E_error2_t* errDesc, void* clientData) noexcept
-{
-  auto* buf = static_cast<char*>(clientData);
-  strncpy(buf, errDesc->desc, MaxErrMsg);
-  buf[MaxErrMsg] = '\0';
-  return 0;
-}
-} // anonymous
 
-Exception::Exception() noexcept
+Datatype createStringType(size_t size)
 {
-  // FIXME: is this the best approach? Is it thread-safe?
-  hid_t stack{H5Eget_current_stack()};
-  // Pop all but inner-most frame, i.e., the root cause.
-  H5Epop(stack, H5Eget_num(stack) - 1);
-  // Get inner-most error message.
-  H5Ewalk2(stack, H5E_WALK_DOWNWARD, setError, what_);
-  // Free stack.
-  H5Eclose_stack(stack);
-}
-
-Exception::~Exception() noexcept = default;
-
-const char* Exception::what() const noexcept
-{
-  return what_;
+  Datatype type{H5Tcopy(H5T_C_S1)};
+  if (!type || H5Tset_size(*type, size) < 0) {
+    throw Exception{};
+  }
+  return type;
 }
 
 } // hdf5

@@ -14,42 +14,28 @@
  * not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
  * 02110-1301, USA.
  */
-#include <ft/hdf5/Exception.hpp>
+#ifndef FT_HDF5_DATATYPE_HPP
+#define FT_HDF5_DATATYPE_HPP
 
-#include <H5Epublic.h>
+#include <ft/util/Defs.hpp>
+#include <ft/util/UniqueHandle.hpp>
 
-using namespace std;
+#include <H5Ppublic.h>
 
 namespace ft {
 namespace hdf5 {
-namespace {
-herr_t setError(unsigned n, const H5E_error2_t* errDesc, void* clientData) noexcept
-{
-  auto* buf = static_cast<char*>(clientData);
-  strncpy(buf, errDesc->desc, MaxErrMsg);
-  buf[MaxErrMsg] = '\0';
-  return 0;
-}
-} // anonymous
 
-Exception::Exception() noexcept
-{
-  // FIXME: is this the best approach? Is it thread-safe?
-  hid_t stack{H5Eget_current_stack()};
-  // Pop all but inner-most frame, i.e., the root cause.
-  H5Epop(stack, H5Eget_num(stack) - 1);
-  // Get inner-most error message.
-  H5Ewalk2(stack, H5E_WALK_DOWNWARD, setError, what_);
-  // Free stack.
-  H5Eclose_stack(stack);
-}
+struct DatatypePolicy {
+  using HandleType = hid_t;
+  static constexpr HandleType Invalid{H5I_INVALID_HID};
+  static void close(HandleType handle) noexcept { H5Tclose(handle); }
+};
 
-Exception::~Exception() noexcept = default;
+using Datatype = UniqueHandle<DatatypePolicy>;
 
-const char* Exception::what() const noexcept
-{
-  return what_;
-}
+FT_API Datatype createStringType(size_t size);
 
 } // hdf5
 } // ft
+
+#endif // FT_HDF5_DATATYPE_HPP

@@ -14,29 +14,19 @@
  * not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
  * 02110-1301, USA.
  */
-#ifndef FT_HDF5_FILE_HPP
-#define FT_HDF5_FILE_HPP
+#include <ft/hdf5/Datatype.hpp>
 
-#include <ft/util/Defs.hpp>
-#include <ft/util/UniqueHandle.hpp>
+#include <boost/test/unit_test.hpp>
 
-#include <H5Ppublic.h>
+using namespace ft::hdf5;
+using namespace std;
 
-namespace ft {
-namespace hdf5 {
+BOOST_AUTO_TEST_SUITE(DatatypeSuite)
 
-struct FilePolicy {
-  using HandleType = hid_t;
-  static constexpr HandleType Invalid{H5I_INVALID_HID};
-  static void close(HandleType handle) noexcept { H5Fclose(handle); }
-};
+BOOST_AUTO_TEST_CASE(Test1Case)
+{
+  auto type = createStringType(16);
+  BOOST_CHECK(H5Tget_size(*type) == 16);
+}
 
-using File = UniqueHandle<FilePolicy>;
-
-FT_API File createFile(const char* name, unsigned flags, hid_t createId = H5P_DEFAULT,
-                       hid_t accessId = H5P_DEFAULT);
-
-} // hdf5
-} // ft
-
-#endif // FT_HDF5_FILE_HPP
+BOOST_AUTO_TEST_SUITE_END()
